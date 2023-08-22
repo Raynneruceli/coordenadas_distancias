@@ -1,0 +1,29 @@
+from geopy import distance
+import pandas as pd
+
+#ler arquivo excel e selecionar as colunas nescessárias
+df = pd.read_excel('/content/saida.xlsx')
+df = df[['Latitude', 'Longitude', 'latitude_destino', 'longitude_destino', 'Endereco']]
+
+#Converter em float
+df['latitude_destino'] = df['latitude_destino'].astype(float)
+df['longitude_destino'] = df['longitude_destino'].astype(float)
+
+#lista que irá receber o valor para depois retornar na planilha excel
+coluna_nova = []
+
+#código que fazer o calculo linha a linha e colocar na nova coluna criada
+def distancia_km(lat, lon, lat1, lon1):
+  origem = (lat, lon)
+  destino = (lat1, lon1)
+  distancia = distance.distance(origem, destino).km
+  return distancia
+
+for index, row in df.iterrows():
+  dist = distancia_km(row['Latitude'], row['Longitude'], row['latitude_novo'], row['longitude_novo'])
+  coluna_nova.append(dist)
+
+    
+#pega o valor da lista e cria coluna com valor, criando também um arquivo excel para download
+df['Distancia_km'] = coluna_nova
+df.to_excel('saida_final.xlsx', index=False, engine='openpyxl')
