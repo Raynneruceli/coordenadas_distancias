@@ -12,7 +12,7 @@ df['longitude_destino'] = df['longitude_destino'].astype(float)
 #lista que irá receber o valor para depois retornar na planilha excel
 coluna_nova = []
 
-#código que fazer o calculo linha a linha e colocar na nova coluna criada
+#código que faz o calculo linha a linha e colocar na nova coluna criada
 def distancia_km(lat, lon, lat1, lon1):
   origem = (lat, lon)
   destino = (lat1, lon1)
